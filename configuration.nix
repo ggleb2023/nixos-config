@@ -3,16 +3,12 @@
 # and in the NixOS manual (accessible by running ‘nixos-help’).
 
 { config, pkgs, ... }:
-
-  
-let
-  unstable = import <nixos-unstable> { config = { allowUnfree = true; }; };
-in {
-
-
+{
   imports =
     [ # Include the results of the hardware scan.
       ./hardware-configuration.nix
+      ./disko-config.nix
+      "${builtins.fetchTarball "https://github.com/nix-community/disko/archive/master.tar.gz"}/module.nix"
     ];
 
         hardware.nvidia.prime = {
@@ -215,8 +211,7 @@ virtualisation.spiceUSBRedirection.enable = true;
           nekoray
           gnumeric 
           usbutils
-          unstable.jellyfin-tui
-          vesktop
+          legcord
           hyfetch
           gnupg
           pciutils
@@ -227,7 +222,6 @@ virtualisation.spiceUSBRedirection.enable = true;
           wineWowPackages.waylandFull
           asciiquarium
           qbittorrent
-          bitwarden-desktop
           qdirstat
           gimp
           bottles
@@ -248,6 +242,8 @@ virtualisation.spiceUSBRedirection.enable = true;
           micro
           SDL2
           uxn
+          keyguard
+          ghostty
                    ]; 
   #tailscale
   services.tailscale = {
@@ -299,3 +295,4 @@ virtualisation.spiceUSBRedirection.enable = true;
   # (e.g. man configuration.nix or on https://nixos.org/nixos/options.html).
   system.stateVersion = "24.11"; # Did you read the comment?
 }
+
