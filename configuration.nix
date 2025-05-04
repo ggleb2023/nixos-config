@@ -7,7 +7,7 @@
   imports =
     [ # Include the results of the hardware scan.
       ./hardware-configuration.nix
-      ./disko-config.nix
+      ./disko.nix
       "${builtins.fetchTarball "https://github.com/nix-community/disko/archive/master.tar.gz"}/module.nix"
     ];
 
@@ -18,6 +18,12 @@
                 # amdgpuBusId = "PCI:54:0:0"; For AMD GPU
                     sync.enable = true;
      };
+
+
+
+              nixpkgs.config.permittedInsecurePackages = [
+                "electron-27.3.11"
+              ];
 
 
 
@@ -75,7 +81,7 @@ programs.neovim = {
   };
 
  
-        #sunxhine
+        #sunshine
       services.sunshine = {
     enable = true;
     autoStart = true;
@@ -99,6 +105,12 @@ programs.neovim = {
   # Enable networking
   networking.networkmanager.enable = true;
 
+
+  # Enable bluetooth
+
+  hardware.bluetooth.enable = true; # enables support for Bluetooth
+  hardware.bluetooth.powerOnBoot = true; # powers up the default Bluetooth controller on boot
+   
   # Set your time zone.
   time.timeZone = "Asia/Yakutsk";
 
@@ -242,23 +254,23 @@ virtualisation.spiceUSBRedirection.enable = true;
           micro
           SDL2
           uxn
-          keyguard
+          onlyoffice-desktopeditors
           ghostty
-                   ]; 
+          logseq
+          obsidian
+          mars-mips
+          openjdk
+          qtspim
+          xspim   
+                             ]; 
   #tailscale
   services.tailscale = {
   enable = true;
   };
 
-  systemd.services.sunshine= {
-    script = ''
-      sudo tailscale up
-      tailscale status
-    '';
-
-    # "Enable" the service
-    wantedBy = [ "multi-user.target" ];
-  };
+  #otd
+  hardware.opentabletdriver.enable = true;
+  
 
   #gvfs
   services.gvfs.enable = true;
@@ -295,4 +307,5 @@ virtualisation.spiceUSBRedirection.enable = true;
   # (e.g. man configuration.nix or on https://nixos.org/nixos/options.html).
   system.stateVersion = "24.11"; # Did you read the comment?
 }
+
 
